@@ -19,12 +19,10 @@ class DatabaseConnectionError extends __CustomExceptions {
     public function respondWithError(){
         $errorInfo = [];
 
-        $debugInfo = [];
+        $errorInfo["step"] = $this->step;
+        $errorInfo["sqlerror"] = $this->sqlErrorMessage;
 
-        $debugInfo["step"] = $this->step;
-        $debugInfo["sqlerror"] = $this->sqlErrorMessage;
-
-        parent::responseHandler($debugInfo, $errorInfo);
+        parent::responseHandler($errorInfo);
     }
 
     /**

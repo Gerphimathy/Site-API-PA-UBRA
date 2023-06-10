@@ -9,9 +9,7 @@ enum ParameterErrorCase
     case Long;
     case Format;
     case Short;
-    case Duplicate;
     case Unknown;
-    case Invalid;
 
     public function code(): int
     {
@@ -20,9 +18,7 @@ enum ParameterErrorCase
             ParameterErrorCase::Long => 1,
             ParameterErrorCase::Format => 2,
             ParameterErrorCase::Short => 3,
-            ParameterErrorCase::Duplicate => 4,
-            ParameterErrorCase::Unknown => 5,
-            ParameterErrorCase::Invalid => 6,
+            ParameterErrorCase::Unknown => 4,
         };
     }
 }
@@ -52,13 +48,11 @@ class InvalidParameterError extends __CustomExceptions {
      * Kills the process
      */
     public function respondWithError(){
-        $debugInfo = [];
-
         $errorInfo = [];
 
         $errorInfo["parameter"] = $this->parameter;
         $errorInfo["case"] = $this->case->code();
 
-        parent::responseHandler($debugInfo, $errorInfo);
+        parent::responseHandler($errorInfo);
     }
 }

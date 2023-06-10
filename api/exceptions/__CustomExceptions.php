@@ -20,8 +20,8 @@ class __CustomExceptions extends Exception {
      * @param array $debugInfo debug info used only for internal server errors, free format
      * @param array $errorInfo strictly formatted parsable error information
      */
-    protected function responseHandler(array $debugInfo = [], array $errorInfo = []){
-        $error = ["code"=>self::getCode(), "message"=>self::getMessage(),"debug"=>(object)$debugInfo, "info"=>(object)$errorInfo];
+    protected function responseHandler(array $errorInfo = []){
+        $error = ["code"=>self::getCode(), "message"=>self::getMessage(), "info"=>(object)$errorInfo];
 
         HtmlResponseHandler::formatedResponse($this->htmlCode, [], ["error"=>$error]);
     }
