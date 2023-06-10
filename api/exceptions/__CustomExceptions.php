@@ -23,6 +23,6 @@ class __CustomExceptions extends Exception {
     protected function responseHandler(array $debugInfo = [], array $errorInfo = []){
         $error = ["code"=>self::getCode(), "message"=>self::getMessage(),"debug"=>(object)$debugInfo, "info"=>(object)$errorInfo];
 
-        HtmlResponseHandler::formatedResponse($this->htmlCode, [], ["success"=>false, "error"=>$error]);
+        HtmlResponseHandler::formatedResponse($this->htmlCode, [], ["error"=>$error]);
     }
 }

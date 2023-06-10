@@ -36,6 +36,9 @@ switch ($route){
             case "PUT":
                 Login::put();
                 break;
+            case "PATCH":
+                Login::patch();
+                break;
             default:
                 HtmlResponseHandler::formatedResponse(405);
         }

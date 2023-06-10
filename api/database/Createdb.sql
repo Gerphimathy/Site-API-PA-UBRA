@@ -2,9 +2,11 @@ USE ubra;
 
 CREATE TABLE pvyihCO0TugPHJv_users
 (
-    id       INT                NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    login    VARCHAR(64) UNIQUE NOT NULL,
-    password CHAR(128)          NOT NULL
+    id       INT                     NOT NULL    PRIMARY KEY     AUTO_INCREMENT,
+    login    VARCHAR(64)    UNIQUE   NOT NULL,
+    password CHAR(128)               NOT NULL,
+    username VARCHAR(255)            NOT NULL,
+    id_code  CHAR(10)       UNIQUE   NOT NULL
 );
 
 CREATE TABLE pvyihCO0TugPHJv_tokens

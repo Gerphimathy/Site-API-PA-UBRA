@@ -10,6 +10,8 @@ enum ParameterErrorCase
     case Format;
     case Short;
     case Duplicate;
+    case Unknown;
+    case Invalid;
 
     public function code(): int
     {
@@ -19,6 +21,8 @@ enum ParameterErrorCase
             ParameterErrorCase::Format => 2,
             ParameterErrorCase::Short => 3,
             ParameterErrorCase::Duplicate => 4,
+            ParameterErrorCase::Unknown => 5,
+            ParameterErrorCase::Invalid => 6,
         };
     }
 }

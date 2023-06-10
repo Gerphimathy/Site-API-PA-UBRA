@@ -106,6 +106,63 @@ class Login
         HtmlResponseHandler::formatedResponse(200, [], ["token" => $token]);
     }
 
+    static function patch(): void
+    {
+        include_once __DIR__ . "/../models/User.php";
+        include_once __DIR__ . "/../models/Token.php";
+
+        $json = json_decode(file_get_contents("php://input"));
+
+        if (empty($json->token)) {
+            $e = new InvalidParameterError(ParameterErrorCase::Empty, "token", "Invalid Request - Parameter is missing");
+            $e->respondWithError();
+        }
+
+        if(empty($json->key)){
+            $e = new InvalidParameterError(ParameterErrorCase::Empty, "key", "Invalid Request - Parameter is missing");
+            $e->respondWithError();
+        }
+
+        if($json->key !== "id_code" && empty($json->value)){
+            $e = new InvalidParameterError(ParameterErrorCase::Empty, "value", "Invalid Request - Parameter is missing");
+            $e->respondWithError();
+        }
+
+        try{
+            $id = Token::tokenIsValid($json->token, $_SERVER['HTTP_USER_AGENT']);
+        }catch (DatabaseConnectionError $e){
+            $e->setStep("Token Check");
+            $e->respondWithError();
+            die();
+        }
+        if ($id === -1) HtmlResponseHandler::formatedResponse(403);
+
+        $key = $json->key;
+        $value = $json->value ?? null;
+
+        if($value !== null)
+            try{
+                self::validateParam($value, $key);
+            } catch (InvalidParameterError $e) {
+                $e->respondWithError();
+                die();
+            }
+
+        try{
+            $res = match ($key){
+                "username" => User::updateUserName($id, $value),
+                "password" => User::updatePassword($id, $value),
+                "id_code" => User::updateIdCode($id),
+            };
+        } catch (DatabaseConnectionError $e) {
+            $e->setStep("Update user");
+            $e->respondWithError();
+            die();
+        }
+        if ($res === false) HtmlResponseHandler::formatedResponse(500);
+        else HtmlResponseHandler::formatedResponse(200);
+    }
+
     /**
      * Validate form inputs individually
      * @param mixed $param input to be validated
@@ -127,8 +184,14 @@ class Login
                     throw new InvalidParameterError(ParameterErrorCase::Format, $paramName, "Invalid Request - Parameter is of wrong format");
                 break;
             case "password":
-                //TODO
+                //TODO: Security check ici
+                break;
+            case "username":
+                if (!ctype_alnum($param))
+                    throw new InvalidParameterError(ParameterErrorCase::Format, $paramName, "Invalid Request - Parameter is of wrong format");
+                break;
             default:
+                throw new InvalidParameterError(ParameterErrorCase::Unknown, $paramName, "Invalid Request - Parameter is unknown");
                 break;
         }
     }
