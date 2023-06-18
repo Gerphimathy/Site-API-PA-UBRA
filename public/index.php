@@ -53,6 +53,16 @@ switch ($route){
                 HtmlResponseHandler::formatedResponse(405);
         }
         break;
+    case "shop":
+        include __DIR__."/../api/controllers/Shop.php";
+        switch ($method){
+            case "PUT":
+                Shop::put();
+                break;
+            default:
+                HtmlResponseHandler::formatedResponse(405);
+        }
+        break;
     default:
         switch ($method){
             case "GET":

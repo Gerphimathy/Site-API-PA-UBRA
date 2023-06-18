@@ -30,6 +30,16 @@ class User{
         );
     }
 
+    public static function isAdmin(string $id):bool{
+        $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
+        $table_name = self::$table_name;
+
+        $res = $link->query("SELECT is_admin FROM $table_name WHERE id = :id", ["id"=>$id]);
+
+        if($res === false) return false;
+
+        return $res["is_admin"] == 1 || $res["is_admin"] == "1";
+    }
 
     /**
      * @param int $id
