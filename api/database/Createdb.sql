@@ -34,10 +34,10 @@ CREATE TABLE  pvyihCO0TugPHJv_skins
     id      INT             NOT NULL    PRIMARY KEY     AUTO_INCREMENT,
     price   INT             NOT NULL    DEFAULT 0,
     name    VARCHAR(255)    NOT NULL,
-    boat_id INT             NOT NULL,
+    id_boat INT             NOT NULL,
     image   VARCHAR(255),
 
-    FOREIGN KEY (boat_id) REFERENCES pvyihCO0TugPHJv_boats (id)
+    FOREIGN KEY (id_boat) REFERENCES pvyihCO0TugPHJv_boats (id)
 );
 
 CREATE TABLE pvyihCO0TugPHJv_skin_ownership

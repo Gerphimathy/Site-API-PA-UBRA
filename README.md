@@ -88,38 +88,75 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
             </li>
         </ul>
     </li>
-    <li><b>/auth</b> <br> Gestion de l'authentification
+    <li><b>/auth</b> <br> Gestion des données utilisateur
         <ul>
-            <li>GET : état du token
+            <li>GET : variable
             <br> Paramètres:
                 <ul>
-                    <li>token</li>
+                    <li>token : string (obligatoire)</li>
+                    <li>data : string (optionnel, user, skins)</li>
                 </ul>
                 Retour:
                 <ul>
                     <li>400 : Requête incorrecte, Voir Format Erreurs 400</li>
+                    <li>403 : Token Invalide</li>
                     <li>500 : Erreur Interne, Voir Format Erreurs 500</li>
-                    <li>200 : Obtention état du token réussi
+                    <li>200 : Obtention de la donnée demandée
+                        <br> None : si data n'est pas spécifié
                         <ul>
                             <li>token : string 30 (le token testé)</li>
                             <li>agent : string ? (l'agent html ayant effectué la requête, chaque utilisateur peut avoir un token par agent)</li>
-                            <li>isvalid : bool</li>
+                            <li>expires : unsigned int (unix timestamp de l'expiration)</li>
+                        </ul>
+                        <br> User : si data = user
+                        <ul>
+                            <li>login : string ? (email)</li>
+                            <li>username : string ? (pseudo)</li>
+                            <li>id_code : string 10 (identifiant unique)</li>
+                            <li>points : int (points de l'utilisateur)</li>
+                            <li>is_admin : bool (si l'utilisateur est admin)</li>
+                        </ul>
+                        <br> Skins : si data = skins : array d'objects de même format
+                        <ul>
+                            <li>id : int (Id du skin)</li>
+                            <li>name : string (Nom du skin)</li>
+                            <li>id_boat : int (id du bateau associé)</li>
+                            <li>boat_name : string ? (Nom du bateaux associé)</li>
                         </ul>
                     </li>
                 </ul>
+            </li>
+            <li>POST : Refresh Token
+            <br> Paramètres:
+                <ul>
+                    <li>token : string (obligatoire)</li>
+                </ul>
+                Retour:
+                <ul>
+                    <li>400 : Requête incorrecte, Voir Format Erreurs 400</li>
+                    <li>403 : Token Invalide</li>
+                    <li>500 : Erreur Interne, Voir Format Erreurs 500</li>
+                    <li>200 : Token rafraîchi
+                        <ul>
+                            <li>token : string 30 (le nouveau token)</li>
+                            <li>agent : string ? (l'agent html ayant effectué la requête, chaque utilisateur peut avoir un token par agent)</li>
+                            <li>expires : unsigned int (unix timestamp de l'expiration)</li>
+                        </ul>
+                    </li>
             </li>
         </ul>
     </li>
     <li><b>/shop</b> <br> Gestion des bateaux et skins
         <ul>
-            <li>PUT : ajout skin/boat
+            <li>GET : retourne html view de shop.php</li>
+            <li>PUT : Ajout skin/boat
             <br> Paramètres:
                 <ul>
                     <li>token</li>
                     <li>type : string (boat/skin)</li>
                     <li>name : string</li>
                     <li>price : int (Pour skin, défaut à 0 si vide)</li>
-                    <li>boat_id : int (Pour skin)</li>
+                    <li>id_boat : int (Pour skin)</li>
                 </ul>
                 Retour:
                 <ul>

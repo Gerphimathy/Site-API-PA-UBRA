@@ -19,4 +19,15 @@ class Boat
 
         return $link->insert("INSERT INTO $table_name (name) VALUES (:name)", ["name"=>$name]);
     }
+
+    public static function getBoatData(int $id_boat):array{
+        $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
+        $table_name = self::$table_name;
+
+        $res = $link->query("SELECT name FROM $table_name WHERE id = :id", ["id"=>$id_boat]);
+
+        if ($res === false) return [];
+
+        return $res;
+    }
 }

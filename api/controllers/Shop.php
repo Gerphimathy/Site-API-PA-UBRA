@@ -2,6 +2,12 @@
 
 class Shop
 {
+    public static function get(): void
+    {
+        include __DIR__ . "/../../public/views/shop.php";
+        die();
+    }
+
     public static function put(){
         include_once __DIR__."/../models/Token.php";
         include_once __DIR__."/../models/User.php";
@@ -34,10 +40,10 @@ class Shop
 
         $name = $json->name ?? "";
         $price = $json->price ?? 0;
-        $boat_id = $json->boat_id ?? null;
+        $id_boat = $json->id_boat ?? null;
 
-        if($boat_id !== null && !Boat::idIsValid($boat_id)){
-            $e = new InvalidParameterError(ParameterErrorCase::Unknown, "boat_id", "Invalid Request - Parameter is invalid");
+        if($id_boat !== null && !Boat::idIsValid($id_boat)){
+            $e = new InvalidParameterError(ParameterErrorCase::Unknown, "id_boat", "Invalid Request - Parameter is invalid");
             $e->respondWithError();
         }
 
@@ -46,11 +52,11 @@ class Shop
 
         switch ($json->type){
             case "skin":
-                if($boat_id === null) {
+                if($id_boat === null) {
                     $e = new InvalidParameterError(ParameterErrorCase::Empty, "boat_id", "Invalid Request - Parameter is missing");
                     $e->respondWithError();
                 }
-                if(Skin::addSkin($name, $price, $boat_id)) HtmlResponseHandler::formatedResponse(200);
+                if(Skin::addSkin($name, $price, $id_boat)) HtmlResponseHandler::formatedResponse(200);
                 else HtmlResponseHandler::formatedResponse(500);
                 break;
             case "boat":

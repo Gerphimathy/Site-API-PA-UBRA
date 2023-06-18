@@ -102,4 +102,19 @@ class Token{
         else return $res["id_user"];
     }
 
+    public static function getTokenExpiration(string $token, string $agent):int{
+        $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
+        $table_name = self::$table_name;
+
+        $res = $link->query("SELECT expires FROM $table_name WHERE token = :token AND client = :agent",
+            [
+                "agent"=>$agent,
+                "token"=>$token
+            ]
+        );
+
+        if ($res === false) return -1;
+        else return strtotime($res["expires"]);
+    }
+
 }

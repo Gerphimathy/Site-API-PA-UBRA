@@ -49,6 +49,9 @@ switch ($route){
             case "GET":
                 Auth::get();
                 break;
+            case "POST":
+                Auth::post();
+                break;
             default:
                 HtmlResponseHandler::formatedResponse(405);
         }
