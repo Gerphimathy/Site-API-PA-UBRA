@@ -147,7 +147,7 @@ class User{
         else return $res["id"];
     }
 
-    public static function loginIdCode(string $id_code):bool{
+    public static function loginIdCode(string $id_code):int{
         $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
         $table_name = self::$table_name;
 

@@ -94,27 +94,24 @@ class Login
 
         $json = json_decode(file_get_contents("php://input"));
 
-        if(empty($json->id_code)){
-            if (empty($json->login)) {
-                $e = new InvalidParameterError(ParameterErrorCase::Empty, "login", "Invalid Request - Parameter is missing");
-                $e->respondWithError();
-            }
-
-            if (empty($json->password)) {
-                $e = new InvalidParameterError(ParameterErrorCase::Empty, "password", "Invalid Request - Parameter is missing");
-                $e->respondWithError();
-            }
-
-            try {
-                $id = User::attemptLogin($json->login, $json->password);
-            } catch (DatabaseConnectionError $e) {
-                $e->setStep("Login attempt");
-                $e->respondWithError();
-                die();
-            }
-        }else{
-            $id = User::loginIdCode($json->id_code);
+        if (empty($json->login)) {
+            $e = new InvalidParameterError(ParameterErrorCase::Empty, "login", "Invalid Request - Parameter is missing");
+            $e->respondWithError();
         }
+
+        if (empty($json->password)) {
+            $e = new InvalidParameterError(ParameterErrorCase::Empty, "password", "Invalid Request - Parameter is missing");
+            $e->respondWithError();
+        }
+
+        try {
+            $id = User::attemptLogin($json->login, $json->password);
+        } catch (DatabaseConnectionError $e) {
+            $e->setStep("Login attempt");
+            $e->respondWithError();
+            die();
+        }
+
 
         if ($id === -1) HtmlResponseHandler::formatedResponse(403);
 
@@ -143,12 +140,8 @@ class Login
 
         $json = json_decode(file_get_contents("php://input"));
 
-        if (empty($json->login)) {
-            $e = new InvalidParameterError(ParameterErrorCase::Empty, "login", "Invalid Request - Parameter is missing");
-            $e->respondWithError();
-        }
-        if (empty($json->password)) {
-            $e = new InvalidParameterError(ParameterErrorCase::Empty, "password", "Invalid Request - Parameter is missing");
+        if (empty($json->token)) {
+            $e = new InvalidParameterError(ParameterErrorCase::Empty, "token", "Invalid Request - Parameter is missing");
             $e->respondWithError();
         }
 
@@ -163,7 +156,7 @@ class Login
         }
 
         try{
-            $id = User::attemptLogin($json->login, $json->password);
+            $id = Token::tokenIsValid($json->token, $_SERVER['HTTP_USER_AGENT']);
         }catch (DatabaseConnectionError $e){
             $e->setStep("Token Check");
             $e->respondWithError();
@@ -194,7 +187,10 @@ class Login
             die();
         }
         if ($res === false) HtmlResponseHandler::formatedResponse(500);
-        else HtmlResponseHandler::formatedResponse(200);
+        else {
+            if($key !== "password") $body = ["key" => $key, "value" => User::getUserData($id)[$key]];
+            HtmlResponseHandler::formatedResponse(200, [], $body ?? []);
+        }
     }
 
     /**

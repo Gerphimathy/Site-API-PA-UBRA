@@ -1,3 +1,5 @@
 <?php
 
-define("TOKEN_VALIDITY", " +3 hours");
+const TOKEN_VALIDITY = " +3 hours";
+
+const BASE_URL = "http://localhost/";

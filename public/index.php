@@ -7,6 +7,7 @@ include __DIR__."/../api/tools/HtmlResponseHandler.php";
 include __DIR__."/../api/database/DatabaseLinkHandler.php";
 include __DIR__."/../api/database/CREDENTIALS.php";
 include __DIR__."/../api/tools/const.php";
+include __DIR__."/../api/tools/frontend.php";
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);

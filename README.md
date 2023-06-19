@@ -44,8 +44,6 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                 <ul>
                     <li>login</li>
                     <li>password</li>
-                    OU
-                    <li>id_code</li>
                 </ul>
                 Retour:
                 <ul>
@@ -82,8 +80,7 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
             <li>PATCH : Modification Utilisateur
                 <br>Paramètres:
                 <ul>
-                    <li>password : string</li>
-                    <li>login : string</li>
+                    <li>token : string</li>
                     <li>key : string (username, password, id_code)</li>
                     <li>value : mixed (optionnel si clé est id_code)</li>
                 </ul>
@@ -92,7 +89,12 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                     <li>400 - Requête incorrecte, Voir Format Erreurs 400</li>
                     <li>403 - Token Invalide</li>
                     <li>500 - Erreur Interne, Voir Format Erreurs 500</li>
-                    <li>200 - Modification Utilisateur Réussie</li>
+                    <li>200 - Modification Utilisateur Réussie
+                        <ul>Both null if key = password
+                            <li>key : string ? (repeat key)</li>
+                            <li>value : string ? (new value)</li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -102,8 +104,8 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
             <li>GET : variable
             <br> Paramètres:
                 <ul>
-                    <li>token : string (obligatoire)</li>
-                    <li>data : string (optionnel, user, skins)</li>
+                    <li>id_code : string</li>
+                    <li>data : string (user, skins)</li>
                 </ul>
                 Retour:
                 <ul>
@@ -111,12 +113,6 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                     <li>403 : Token Invalide</li>
                     <li>500 : Erreur Interne, Voir Format Erreurs 500</li>
                     <li>200 : Obtention de la donnée demandée
-                        <br> None : si data n'est pas spécifié
-                        <ul>
-                            <li>token : string 30 (le token testé)</li>
-                            <li>agent : string ? (l'agent html ayant effectué la requête, chaque utilisateur peut avoir un token par agent)</li>
-                            <li>expires : unsigned int (unix timestamp de l'expiration)</li>
-                        </ul>
                         <br> User : si data = user
                         <ul>
                             <li>login : string ? (email)</li>

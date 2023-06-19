@@ -8,15 +8,15 @@ class Auth{
     public static function get():void{
         include_once __DIR__."/../models/Token.php";
 
-        if(empty($_GET["token"])){
-            $e = new InvalidParameterError(ParameterErrorCase::Empty, "token", "Invalid Request - Parameter is missing");
+        if(empty($_GET["id_code"])){
+            $e = new InvalidParameterError(ParameterErrorCase::Empty, "id_code", "Invalid Request - Parameter is missing");
 
             //Kills process
             $e->respondWithError();
         }
 
         try{
-            $id = Token::tokenIsValid($_GET["token"], $_SERVER['HTTP_USER_AGENT']);
+            $id = User::loginIdCode($_GET["id_code"]);
         }catch (DatabaseConnectionError $e){
             $e->setStep("Token Check");
             $e->respondWithError();
@@ -24,13 +24,7 @@ class Auth{
         }
 
 
-        $token = $_GET["token"];
-        $agent = $_SERVER['HTTP_USER_AGENT'];
-        $isvalid = !($id === -1);
-
-        if(!$isvalid) HtmlResponseHandler::formatedResponse(403);
-
-        $expires = Token::getTokenExpiration($token, $agent);
+        if($id < 1) HtmlResponseHandler::formatedResponse(403);
 
         $data = $_GET["data"] ?? null;
         switch ($data){
@@ -51,7 +45,8 @@ class Auth{
                 HtmlResponseHandler::formatedResponse(200, [], $skins);
                 break;
             default:
-                HtmlResponseHandler::formatedResponse(200, [], ["token"=>$token, "agent"=>$agent, "expires"=>$expires]);
+                $e = new InvalidParameterError(ParameterErrorCase::Format, "data", "Invalid Request - Parameter is invalid");
+                $e->respondWithError();
                 break;
         }
     }
