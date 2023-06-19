@@ -53,6 +53,7 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                     <li>200 - Connexion réussie
                         <ul>
                             <li>token : string 30</li>
+                            <li>expires : unsigned int (unix timestamp)</li>
                         </ul>
                     </li>
                 </ul>
@@ -68,7 +69,12 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                     <li>400 - Requête incorrecte, Voir Format Erreurs 400</li>
                     <li>409 - Login déjà utilisé</li>
                     <li>500 - Erreur Interne, Voir Format Erreurs 500</li>
-                    <li>200 - Création Utilisateur Réussie</li>
+                    <li>200 - Création Utilisateur Réussie
+                        <ul>
+                            <li>token : string 30</li>
+                            <li>expires : unsigned int (unix timestamp)</li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
             <li>PATCH : Modification Utilisateur

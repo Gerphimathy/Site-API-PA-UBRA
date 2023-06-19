@@ -20,6 +20,7 @@ class Login
     public static function put(): void
     {
         include __DIR__ . "/../models/User.php";
+        include __DIR__ . "/../models/Token.php";
 
         $json = json_decode(file_get_contents("php://input"));
 
@@ -56,7 +57,30 @@ class Login
             $err->respondWithError();
         }
 
-        HtmlResponseHandler::formatedResponse(200);
+        $agent = $_SERVER['HTTP_USER_AGENT'];
+
+        try {
+            $id = User::attemptLogin($json->login, $json->password);
+        } catch (DatabaseConnectionError $e) {
+            $e->setStep("Login attempt");
+            $e->respondWithError();
+            die();
+        }
+
+        try {
+            if (Token::tokenExists($id, $agent))
+                $token = Token::refreshToken($id, $agent);
+            else
+                $token = Token::generateToken($id, $agent);
+        } catch (DatabaseConnectionError $e) {
+            $e->setStep("Token generation");
+            $e->respondWithError();
+            die();
+        }
+
+        $expires = Token::getTokenExpiration($token, $agent);
+
+        HtmlResponseHandler::formatedResponse(200, [], ["token" => $token, "expires" => $expires]);
     }
 
     /**
@@ -103,7 +127,9 @@ class Login
             die();
         }
 
-        HtmlResponseHandler::formatedResponse(200, [], ["token" => $token]);
+        $expires = Token::getTokenExpiration($token, $agent);
+
+        HtmlResponseHandler::formatedResponse(200, [], ["token" => $token, "expires" => $expires]);
     }
 
     static function patch(): void
