@@ -57,4 +57,58 @@ class Skin
 
         return $res;
     }
+
+    public static function getAllSkinsShop(int $begin = 0, int $length = 10, int $uid = -1):array{
+        $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
+        $table_name = self::$table_name;
+        $user_link_table = self::$user_link_table;
+
+        if($uid < 0){
+            $query = "SELECT id, name, id_boat, price FROM $table_name";
+            $params = [];
+        }
+        else{
+            $query = "SELECT id, name, id_boat, price FROM $table_name WHERE id NOT IN (SELECT id_skin FROM $user_link_table WHERE id_user = :id_user)";
+            $params = ["id_user"=>$uid];
+        }
+
+        try {
+            $res = $link->queryAll($query, $params);
+        }catch (DatabaseConnectionError $e){
+            $e->setStep("Skin::getAllSkinsShop");
+            $e->respondWithError();
+            die();
+        }
+
+        if ($res === false) return [];
+
+        //Filter using begin and length
+        return array_slice($res, $begin, $length);
+    }
+
+    public static function getSkinTotalShop(int $uid = -1):int{
+        $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
+        $table_name = self::$table_name;
+        $user_link_table = self::$user_link_table;
+
+        if($uid < 0) {
+            $query = "SELECT COUNT(*) FROM $table_name";
+            $params = [];
+        }
+        else{
+            $query = "SELECT COUNT(*) FROM $table_name WHERE id NOT IN (SELECT id_skin FROM $user_link_table WHERE id_user = :id_user)";
+            $params = ["id_user"=>$uid];
+        }
+
+        try {
+            $res = $link->query($query, $params);
+        }catch (DatabaseConnectionError $e){
+            $e->setStep("Skin::getAllSkinsShop");
+            $e->respondWithError();
+        }
+
+        if ($res === false) return 0;
+
+        return $res["COUNT(*)"];
+    }
 }

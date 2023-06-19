@@ -15,6 +15,9 @@ if(isset($_SESSION["token"])){
 }
 else session_destroy();
 
+include_once __DIR__."/../../../api/models/Skin.php";
+include_once __DIR__."/../../../api/models/Boat.php";
+include_once __DIR__."/../../../api/models/User.php";
 
 $scripts = array();
 

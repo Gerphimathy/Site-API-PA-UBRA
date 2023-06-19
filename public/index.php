@@ -66,6 +66,9 @@ switch ($route){
             case "POST":
                 Shop::post();
                 break;
+            case "GET":
+                Shop::get();
+                break;
             default:
                 HtmlResponseHandler::formatedResponse(405);
         }

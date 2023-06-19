@@ -43,9 +43,6 @@ if (!isset($_SESSION["token"])):
     ?>
     <p>Vous êtes connecté !</p>
     <?php
-        include_once __DIR__."/../../api/models/User.php";
-        include_once __DIR__."/../../api/models/Skin.php";
-        include_once __DIR__."/../../api/models/Boat.php";
         $user_data = User::getUserData($__uid);
     ?>
 
@@ -66,6 +63,8 @@ if (!isset($_SESSION["token"])):
 
     <div>
         <?php $skins = Skin::ownedSkins($__uid);
+
+        $shop = false;
         foreach ($skins as $skin){
             include __DIR__."/includes/skin.php";
         }
