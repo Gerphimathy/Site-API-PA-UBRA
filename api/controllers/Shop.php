@@ -8,6 +8,51 @@ class Shop
         die();
     }
 
+    //Purchase skin
+    public static function post(): void{
+        include_once __DIR__."/../models/Token.php";
+        include_once __DIR__."/../models/User.php";
+        include_once __DIR__."/../models/Boat.php";
+        include_once __DIR__."/../models/Skin.php";
+
+        $json = json_decode(file_get_contents("php://input"));
+
+        if(empty($json->token)){
+            $e = new InvalidParameterError(ParameterErrorCase::Empty, "token", "Invalid Request - Parameter is missing");
+            $e->respondWithError();
+        }
+
+        try{
+            $id_user = Token::tokenIsValid($json->token, $_SERVER['HTTP_USER_AGENT']);
+        }catch (DatabaseConnectionError $e){
+            $e->setStep("Token Check");
+            $e->respondWithError();
+            die();
+        }
+
+        if($id_user === -1) HtmlResponseHandler::formatedResponse(403);
+
+        if(empty($json->id_skin)){
+            $e = new InvalidParameterError(ParameterErrorCase::Empty, "id_skin", "Invalid Request - Parameter is missing");
+            $e->respondWithError();
+        }
+
+        $user_points = User::getUserData($id_user)["points"];
+        $skin_price = Skin::getSkinData($json->id_skin)["price"] ?? null;
+
+        if ($skin_price === null) HtmlResponseHandler::formatedResponse(404);
+
+        if(Skin::ownsSkin($id_user, $json->id_skin)) HtmlResponseHandler::formatedResponse(409);
+
+        if ($user_points < $skin_price) HtmlResponseHandler::formatedResponse(402);
+
+        $r1 = Skin::addOwnership($id_user, $json->id_skin);
+        $r2 = User::setPoints($id_user, $user_points - $skin_price);
+
+        if($r1 && $r2) HtmlResponseHandler::formatedResponse(200);
+        else HtmlResponseHandler::formatedResponse(500);
+    }
+
     public static function put(){
         include_once __DIR__."/../models/Token.php";
         include_once __DIR__."/../models/User.php";

@@ -142,7 +142,7 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                             <li>agent : string ? (l'agent html ayant effectué la requête, chaque utilisateur peut avoir un token par agent)</li>
                             <li>expires : unsigned int (unix timestamp de l'expiration)</li>
                         </ul>
-                    </li>
+                </ul>
             </li>
         </ul>
     </li>
@@ -164,6 +164,22 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                     <li>403 : L'utilisateur ne dispose pas des droits admin</li>
                     <li>500 : Erreur Interne, Voir Format Erreurs 500</li>
                     <li>200 : Ajout Réussi</li>
+                </ul>
+            </li>
+            <li>POST: Effectuer un achat
+            <br> Paramètres:
+                <ul>
+                    <li>token : string</li>
+                    <li>id_skin : int</li>
+                </ul>
+                Retour:
+                <ul>
+                    <li>402 : L'utilisateur ne possède pas assez de crédit</li>
+                    <li>403 : Utilisateur non authentifié</li>
+                    <li>404 : L'id de skin donné ne correspond pas à un ID existant</li>
+                    <lI>409 : L'utilisateur possède déjà le skin</lI>
+                    <li>500 : Erreur Interne, Voir Format Erreurs 500</li>
+                    <li>200 : Achat Réussi</li>
                 </ul>
             </li>
         </ul>

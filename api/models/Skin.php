@@ -40,11 +40,18 @@ class Skin
         return $skins;
     }
 
+    public static function addOwnership(int $id_user, int $id_skin):bool{
+        $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
+        $table_name = self::$user_link_table;
+
+        return $link->insert("INSERT INTO $table_name (id_user, id_skin) VALUES (:id_user, :id_skin)", ["id_user"=>$id_user, "id_skin"=>$id_skin]);
+    }
+
     public static function getSkinData(int $id_skin):array{
         $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
         $table_name = self::$table_name;
 
-        $res = $link->query("SELECT id, name, id_boat FROM $table_name WHERE id = :id", ["id"=>$id_skin]);
+        $res = $link->query("SELECT id, name, id_boat, price FROM $table_name WHERE id = :id", ["id"=>$id_skin]);
 
         if ($res === false) return [];
 

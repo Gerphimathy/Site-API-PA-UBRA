@@ -91,6 +91,18 @@ class User{
         return $res;
     }
 
+    public static function setPoints(int $id_user, int $newPoints):bool{
+        $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
+        $table_name = self::$table_name;
+
+        return $link->insert("UPDATE $table_name SET points = :points WHERE id = :id",
+            [
+                "points"=>$newPoints,
+                "id"=>$id_user
+            ]
+        );
+    }
+
     /**
      * @param int $id
      * @return bool
