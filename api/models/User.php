@@ -147,6 +147,16 @@ class User{
         else return $res["id"];
     }
 
+    public static function loginIdCode(string $id_code):bool{
+        $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
+        $table_name = self::$table_name;
+
+        $res = $link->query("SELECT id FROM $table_name WHERE id_code = :id_code", ["id_code"=>$id_code]);
+
+        if ($res === false) return false;
+        else return $res["id"];
+    }
+
     /**
      * Checks to if login is already in use
      * @throws DatabaseConnectionError

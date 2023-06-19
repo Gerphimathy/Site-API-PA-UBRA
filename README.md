@@ -44,6 +44,8 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                 <ul>
                     <li>login</li>
                     <li>password</li>
+                    OU
+                    <li>id_code</li>
                 </ul>
                 Retour:
                 <ul>
@@ -80,7 +82,8 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
             <li>PATCH : Modification Utilisateur
                 <br>Paramètres:
                 <ul>
-                    <li>token : string</li>
+                    <li>password : string</li>
+                    <li>login : string</li>
                     <li>key : string (username, password, id_code)</li>
                     <li>value : mixed (optionnel si clé est id_code)</li>
                 </ul>
