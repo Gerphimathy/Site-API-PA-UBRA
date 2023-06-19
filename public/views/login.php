@@ -2,6 +2,11 @@
 <html lang="fr">
 <head>
     <?php include __DIR__."/includes/head.php";?>
+    <title><?php
+
+        echo $__uid > 0 ? "Profil" : "Connexion";
+
+        ?></title>
 </head>
 <body>
 <?php include __DIR__."/includes/header.php";?>

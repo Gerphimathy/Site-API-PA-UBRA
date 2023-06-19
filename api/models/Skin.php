@@ -111,4 +111,15 @@ class Skin
 
         return $res["COUNT(*)"];
     }
+
+    public static function getLargestId():int{
+        $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
+        $table_name = self::$table_name;
+
+        $res = $link->query("SELECT MAX(id) FROM $table_name", []);
+
+        if ($res === false) return 0;
+
+        return $res["MAX(id)"];
+    }
 }

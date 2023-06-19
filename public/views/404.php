@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <?php include __DIR__."/includes/head.php";?>
+    <title>404</title>
 </head>
 <body>
 <?php include __DIR__."/includes/header.php";?>

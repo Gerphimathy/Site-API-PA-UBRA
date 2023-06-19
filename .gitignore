@@ -1,1 +1,4 @@
 .idea
+
+public/uploads/boats/*.png
+public/uploads/skins/*.png

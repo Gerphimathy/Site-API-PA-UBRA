@@ -73,6 +73,15 @@ switch ($route){
                 HtmlResponseHandler::formatedResponse(405);
         }
         break;
+    case 'admin':
+        switch ($method){
+            case "GET":
+                include __DIR__."/views/admin.php";
+                die();
+                break;
+            default:
+                HtmlResponseHandler::formatedResponse(405);
+        }
     default:
         switch ($method){
             case "GET":
