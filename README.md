@@ -123,10 +123,12 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                         </ul>
                         <br> Skins : si data = skins : array d'objects de même format
                         <ul>
-                            <li>id : int (Id du skin)</li>
+                            <li>id : int (Id du skin associé dans la bdd)</li>
+                            <li>id_boat : int (id du bateau associé dans la bdd)</li>
                             <li>name : string (Nom du skin)</li>
-                            <li>id_boat : int (id du bateau associé)</li>
+                            <li>identifier: string 10 (identifiant unique du skin)</li>
                             <li>boat_name : string ? (Nom du bateaux associé)</li>
+                            <li>boat_identifier : string ? (identifiant unique du bateau associé)</li>
                         </ul>
                     </li>
                 </ul>

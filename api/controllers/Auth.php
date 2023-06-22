@@ -42,6 +42,7 @@ class Auth{
                     $boat_data = Boat::getBoatData($skin->id_boat);
 
                     $skin->boat_name = $boat_data["name"];
+                    $skin->boat_identifier = $boat_data["identifier"];
                 }
                 HtmlResponseHandler::formatedResponse(200, [], $skins);
                 break;
