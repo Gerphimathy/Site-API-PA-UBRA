@@ -53,7 +53,10 @@ class Shop
         else HtmlResponseHandler::formatedResponse(500);
     }
 
+    //DEPRECATED, use the /admin interface
     public static function put(){
+        return 0;
+
         include_once __DIR__."/../models/Token.php";
         include_once __DIR__."/../models/User.php";
         include_once __DIR__."/../models/Boat.php";

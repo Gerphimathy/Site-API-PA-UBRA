@@ -11,8 +11,10 @@ $is_admin = $is_admin ?? false;
 
 <div id="skin_<?php echo $skin->id; ?>">
     <h3><?php echo $skin->name; ?></h3>
+    / <span><?php echo $skin->identifier; ?></span>
     Pour le bateau :
     <h3><?php echo $boat->name; ?></h3>
+    / <span><?php echo $boat->identifier; ?></span>
 
     <img src="<?php echo BASE_URL."uploads/skins/".$skin->id.".png"; ?>" alt="<?php echo $skin->name; ?>">
 

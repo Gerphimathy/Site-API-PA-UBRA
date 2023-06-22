@@ -7,6 +7,7 @@ class Auth{
      */
     public static function get():void{
         include_once __DIR__."/../models/Token.php";
+        include_once __DIR__."/../models/User.php";
 
         if(empty($_GET["id_code"])){
             $e = new InvalidParameterError(ParameterErrorCase::Empty, "id_code", "Invalid Request - Parameter is missing");

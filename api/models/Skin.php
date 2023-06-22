@@ -6,12 +6,14 @@ class Skin
 
     static string $user_link_table = TABLE_PREFIX."skin_ownership";
 
-    public static function addSkin(string $name, int $price, int $boat_id):bool{
+    public static function addSkin(string $name, int $price, int $boat_id, string $identifier):bool{
         $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
         $table_name = self::$table_name;
 
-        return $link->insert("INSERT INTO $table_name (name, price, id_boat) VALUES (:name, :price, :id_boat)",
-            ["name"=>$name, "price"=>$price, "id_boat"=>$boat_id]);
+        if (self::getSkinDataByIdentifier($identifier) !== [])return false;
+
+        return $link->insert("INSERT INTO $table_name (name, price, id_boat, identifier) VALUES (:name, :price, :id_boat, :identifier)",
+            ["name"=>$name, "price"=>$price, "id_boat"=>$boat_id, "identifier"=>$identifier]);
     }
 
     public static function ownsSkin(int $id_user, int $id_skin):bool{
@@ -51,7 +53,18 @@ class Skin
         $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
         $table_name = self::$table_name;
 
-        $res = $link->query("SELECT id, name, id_boat, price FROM $table_name WHERE id = :id", ["id"=>$id_skin]);
+        $res = $link->query("SELECT id, name, id_boat, price, identifier FROM $table_name WHERE id = :id", ["id"=>$id_skin]);
+
+        if ($res === false) return [];
+
+        return $res;
+    }
+
+    public static function getSkinDataByIdentifier(string $identifier):array{
+        $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
+        $table_name = self::$table_name;
+
+        $res = $link->query("SELECT id, name, id_boat, price, identifier FROM $table_name WHERE identifier = :identifier", ["identifier"=>$identifier]);
 
         if ($res === false) return [];
 
@@ -64,11 +77,11 @@ class Skin
         $user_link_table = self::$user_link_table;
 
         if($uid < 0){
-            $query = "SELECT id, name, id_boat, price FROM $table_name";
+            $query = "SELECT id, name, id_boat, price, identifier FROM $table_name";
             $params = [];
         }
         else{
-            $query = "SELECT id, name, id_boat, price FROM $table_name WHERE id NOT IN (SELECT id_skin FROM $user_link_table WHERE id_user = :id_user)";
+            $query = "SELECT id, name, id_boat, price, identifier FROM $table_name WHERE id NOT IN (SELECT id_skin FROM $user_link_table WHERE id_user = :id_user)";
             $params = ["id_user"=>$uid];
         }
 

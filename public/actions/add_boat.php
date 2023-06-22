@@ -36,10 +36,15 @@ if (!$is_admin){
 
 $name = $_POST["name"] ?? null;
 $image = $_FILES["image"] ?? null;
+$identifier = $_POST["identifier"] ?? null;
 
-
-if(!isset($name) || !isset($image)){
+if(!isset($name) || !isset($image) || !isset($identifier)){
     header("Location: /admin?error=missing_data");
+    die();
+}
+
+if(Boat::getBoatDataByIdentifier($identifier) !== []){
+    header("Location: /admin?error=identifier_already_exists");
     die();
 }
 
@@ -49,7 +54,10 @@ if($image["size"] > 10000000){
     die();
 }
 
-Boat::addBoat($name);
+if(!Boat::addBoat($name, $identifier)) {
+    header("Location: /admin?error=database_error");
+    die();
+}
 $id = Boat::getLargestId();
 
 

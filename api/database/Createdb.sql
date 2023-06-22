@@ -26,6 +26,7 @@ CREATE TABLE  pvyihCO0TugPHJv_boats
 (
     id    INT          NOT NULL    PRIMARY KEY     AUTO_INCREMENT,
     name  VARCHAR(255) NOT NULL,
+    identifier CHAR(10) NOT NULL UNIQUE
 );
 
 CREATE TABLE  pvyihCO0TugPHJv_skins
@@ -34,6 +35,7 @@ CREATE TABLE  pvyihCO0TugPHJv_skins
     price   INT             NOT NULL    DEFAULT 0,
     name    VARCHAR(255)    NOT NULL,
     id_boat INT             NOT NULL,
+    identifier CHAR(10)     NOT NULL UNIQUE,
 
     FOREIGN KEY (id_boat) REFERENCES pvyihCO0TugPHJv_boats (id)
 );

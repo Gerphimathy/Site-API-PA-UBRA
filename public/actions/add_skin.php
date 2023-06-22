@@ -39,15 +39,16 @@ $name = $_POST["name"] ?? null;
 $image = $_FILES["image"] ?? null;
 $price = $_POST["price"] ?? null;
 $id_boat = $_POST["id_boat"] ?? -1;
+$identifier = $_POST["identifier"] ?? null;
+
+if(!isset($name) || !isset($image) || !isset($price) || !isset($identifier)){
+    header("Location: /admin?error=missing_data");
+    die();
+}
 
 //Check if the boat exists
 if(Boat::getBoatData($id_boat) === []){
     header("Location: /admin?error=boat_not_found");
-    die();
-}
-
-if(!isset($name) || !isset($image) || !isset($price)){
-    header("Location: /admin?error=missing_data");
     die();
 }
 
@@ -57,7 +58,10 @@ if($image["size"] > 10000000){
     die();
 }
 
-Skin::addSkin($name, $price, $id_boat);
+if(!Skin::addSkin($name, $price, $id_boat, $identifier)){
+    header("Location: /admin?error=database_error");
+    die();
+}
 $id = Skin::getLargestId();
 
 

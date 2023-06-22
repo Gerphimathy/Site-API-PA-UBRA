@@ -154,23 +154,6 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
     <li><b>/shop</b> <br> Gestion des bateaux et skins
         <ul>
             <li>GET : retourne html view de shop.php</li>
-            <li>PUT : Ajout skin/boat
-            <br> Paramètres:
-                <ul>
-                    <li>token</li>
-                    <li>type : string (boat/skin)</li>
-                    <li>name : string</li>
-                    <li>price : int (Pour skin, défaut à 0 si vide)</li>
-                    <li>id_boat : int (Pour skin)</li>
-                </ul>
-                Retour:
-                <ul>
-                    <li>400 : Requête incorrecte, Voir Format Erreurs 400</li>
-                    <li>403 : L'utilisateur ne dispose pas des droits admin</li>
-                    <li>500 : Erreur Interne, Voir Format Erreurs 500</li>
-                    <li>200 : Ajout Réussi</li>
-                </ul>
-            </li>
             <li>POST: Effectuer un achat
             <br> Paramètres:
                 <ul>

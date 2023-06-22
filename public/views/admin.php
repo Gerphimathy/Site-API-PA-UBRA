@@ -26,6 +26,7 @@
     <form method="post" action="/actions/add_boat.php"  enctype="multipart/form-data">
         <input type="text" name="name" placeholder="Nom du bateau" required>
         <input type="file" name="image" accept="image/png, image/jpeg, image/webp" required>
+        <input type="text" name="identifier" placeholder="identifiant unique" minlength="10" maxlength="10" required>
         <button type="submit">Ajouter bateau</button>
     </form>
 
@@ -42,6 +43,7 @@
         <input type="text" name="name" placeholder="Nom du skin" required>
         <input type="file" name="image" accept="image/png, image/jpeg, image/webp" required>
         <input type="number" name="price" placeholder="Prix en points" required>
+        <input type="text" name="identifier" placeholder="identifiant unique" minlength="10" maxlength="10" required>
         <select name="id_boat" required>
             <?php
             $boats = Boat::getAllBoatsData();

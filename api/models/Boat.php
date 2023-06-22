@@ -13,30 +13,42 @@ class Boat
         return $res !== false;
     }
 
-    public static function addBoat(string $name):bool{
+    public static function addBoat(string $name, string $identifier):bool{
         $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
         $table_name = self::$table_name;
 
-        return $link->insert("INSERT INTO $table_name (name) VALUES (:name)", ["name"=>$name]);
+        if(self::getBoatDataByIdentifier($identifier) !== []) return false;
+
+        return $link->insert("INSERT INTO $table_name (name, identifier) VALUES (:name, :identifier)", ["name"=>$name, "identifier"=>$identifier]);
     }
 
     public static function getBoatData(int $id_boat):array{
         $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
         $table_name = self::$table_name;
 
-        $res = $link->query("SELECT name FROM $table_name WHERE id = :id", ["id"=>$id_boat]);
+        $res = $link->query("SELECT id, name, identifier FROM $table_name WHERE id = :id", ["id"=>$id_boat]);
 
         if ($res === false) return [];
 
         return $res;
     }
 
+    public static function getBoatDataByIdentifier(string $identifier):array{
+        $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
+        $table_name = self::$table_name;
+
+        $res = $link->query("SELECT id, name, identifier FROM $table_name WHERE identifier = :identifier", ["identifier"=>$identifier]);
+
+        if ($res === false) return [];
+
+        return $res;
+    }
 
     public static function getAllBoatsData():array{
         $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
         $table_name = self::$table_name;
 
-        $res = $link->queryAll("SELECT id, name FROM $table_name", []);
+        $res = $link->queryAll("SELECT id, name, identifier FROM $table_name", []);
 
         if ($res === false) return [];
 
