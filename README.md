@@ -99,7 +99,7 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
             </li>
         </ul>
     </li>
-    <li><b>/auth</b> <br> Gestion des données utilisateur
+    <li><b>/auth</b> <br> Gestion des données utilisateur depuis l'appli
         <ul>
             <li>GET : variable
             <br> Paramètres:
@@ -133,10 +133,11 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                     </li>
                 </ul>
             </li>
-            <li>POST : Refresh Token
+            <li>POST : Add Points
             <br> Paramètres:
                 <ul>
-                    <li>token : string (obligatoire)</li>
+                    <li>id_code : string (obligatoire)</li>
+                    <li>points : int</li>
                 </ul>
                 Retour:
                 <ul>
@@ -145,9 +146,7 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                     <li>500 : Erreur Interne, Voir Format Erreurs 500</li>
                     <li>200 : Token rafraîchi
                         <ul>
-                            <li>token : string 30 (le nouveau token)</li>
-                            <li>agent : string ? (l'agent html ayant effectué la requête, chaque utilisateur peut avoir un token par agent)</li>
-                            <li>expires : unsigned int (unix timestamp de l'expiration)</li>
+                            <li>points : int (la nouvelle quantité de points)</li>
                         </ul>
                 </ul>
             </li>
