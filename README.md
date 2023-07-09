@@ -105,12 +105,14 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
             <br> Paramètres:
                 <ul>
                     <li>id_code : string</li>
-                    <li>data : string (user, skins)</li>
+                    <li>data : string (user, skins, time)</li>
+                    <li>map : int (if data is time)</li>
                 </ul>
                 Retour:
                 <ul>
                     <li>400 : Requête incorrecte, Voir Format Erreurs 400</li>
                     <li>403 : Token Invalide</li>
+                    <li>404 : Si data = time et il n'y a pas de temps enregistrés</li>
                     <li>500 : Erreur Interne, Voir Format Erreurs 500</li>
                     <li>200 : Obtention de la donnée demandée
                         <br> User : si data = user
@@ -130,6 +132,10 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                             <li>boat_name : string ? (Nom du bateaux associé)</li>
                             <li>boat_identifier : string ? (identifiant unique du bateau associé)</li>
                         </ul>
+                        <br> Time : si data = time
+                        <ul>
+                            <li>time : int (temps en milisecondes)</li>
+                        </ul>
                     </li>
                 </ul>
             </li>
@@ -138,6 +144,8 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                 <ul>
                     <li>id_code : string (obligatoire)</li>
                     <li>points : int</li>
+                    OU
+                    <li>chrono : int (temp en millisecondes)</li>
                 </ul>
                 Retour:
                 <ul>
@@ -147,6 +155,8 @@ API Web pour le projet Ultimate Boat Racing Arcade de l'équipe 10
                     <li>200 : Token rafraîchi
                         <ul>
                             <li>points : int (la nouvelle quantité de points)</li>
+                            OU
+                            <li>chrono : int (le nouveau temps en millisecondes)</li>
                         </ul>
                 </ul>
             </li>

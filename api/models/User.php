@@ -3,6 +3,7 @@
 class User{
 
     static string $table_name = TABLE_PREFIX."users";
+    static string $time_table_name = TABLE_PREFIX."times";
 
     /**
      * Inserts new use into the database
@@ -28,6 +29,28 @@ class User{
                 "id_code"=>$id_code
             ]
         );
+    }
+
+    public static function getPlayerTime(int $id_user, int $id_map):int{
+        $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
+        $table_name = self::$time_table_name;
+
+        $res = $link->query("SELECT time FROM $table_name WHERE id_user = :id_user AND id_map = :id_map", ["id_user"=>$id_user, "id_map"=>$id_map]);
+
+        if($res === false) return -1;
+
+        return $res["time"];
+    }
+
+    public static function setPlayerTime(int $id_user, int $id_map, int $time):bool{
+        $link = new DatabaseLinkHandler(HOST, CHARSET, DB, USER, PASS);
+        $table_name = self::$time_table_name;
+
+        $res = $link->query("SELECT time FROM $table_name WHERE id_user = :id_user AND id_map = :id_map", ["id_user"=>$id_user, "id_map"=>$id_map]);
+
+        if($res === false) return $link->insert("INSERT INTO $table_name (id_user, id_map, time) VALUES (:id_user, :id_map, :time)", ["id_user"=>$id_user, "id_map"=>$id_map, "time"=>$time]);
+
+        return $link->insert("UPDATE $table_name SET time = :time WHERE id_user = :id_user AND id_map = :id_map", ["id_user"=>$id_user, "id_map"=>$id_map, "time"=>$time]);
     }
 
     public static function isAdmin(string $id):bool{

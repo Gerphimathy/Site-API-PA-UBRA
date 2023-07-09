@@ -49,3 +49,13 @@ CREATE TABLE pvyihCO0TugPHJv_skin_ownership
     FOREIGN KEY (id_skin) REFERENCES pvyihCO0TugPHJv_skins (id),
     PRIMARY KEY (id_user, id_skin)
 );
+
+CREATE TABLE pvyihCO0TugPHJv_times
+(
+    id_user INT NOT NULL,
+    id_map  INT NOT NULL,
+    time    INT NOT NULL,
+
+    FOREIGN KEY (id_user) REFERENCES pvyihCO0TugPHJv_users (id),
+    PRIMARY KEY (id_user, id_map)
+);
