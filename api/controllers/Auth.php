@@ -57,8 +57,9 @@ class Auth{
         include_once __DIR__."/../models/Token.php";
         include_once __DIR__."/../models/User.php";
 
+        $json = json_decode(file_get_contents("php://input"));
 
-        if(empty($_POST["id_code"])){
+        if(empty($json->id_code)){
             $e = new InvalidParameterError(ParameterErrorCase::Empty, "id_code", "Invalid Request - Parameter is missing");
 
             //Kills process
@@ -66,7 +67,7 @@ class Auth{
         }
 
         try{
-            $id = User::loginIdCode($_POST["id_code"]);
+            $id = User::loginIdCode($json->id_code);
         }catch (DatabaseConnectionError $e){
             $e->setStep("Token Check");
             $e->respondWithError();
@@ -76,7 +77,7 @@ class Auth{
 
         if($id < 1) HtmlResponseHandler::formatedResponse(403);
 
-        $points = $_POST["points"] ?? 0;
+        $points = $json->points ?? 0;
         $current = User::getUserData($id)["points"];
         $new = $current + $points;
         User::setPoints($id, $new);
